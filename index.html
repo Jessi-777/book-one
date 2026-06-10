@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Anchor - Jessica Chavez aka Tica Rey</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --nav-h: 64px;
+    --ink: #050d1a;
+    --paper: #e8f0f7;
+    --gold: #c9a84c;
+    --gold-dim: #8a6f2e;
+    --warm: #5b7fa6;
+    --muted: #1a2e45;
+    --text: #b8cfe0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: var(--ink);
+    font-family: 'Jost', sans-serif;
+    color: var(--text);
+    cursor: default;
+  }
+
+  /* PAGES */
+  .page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+    overflow: hidden;
+  }
+
+  .page.active {
+    opacity: 1;
+    pointer-events: all;
+    overflow-y: auto;
+  }
+
+  .page-scroll-inner {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+
+  /* TRANSLATE */
+  .translate-wrap { position: relative; display: flex; align-items: center; }
+  .translate-btn {
+    background: none;
+    border: 1px solid #1a3050;
+    color: #6b5c45;
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+  .translate-btn:hover { border-color: #c9a84c; color: #c9a84c; }
+  .lang-dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    background: #071221;
+    border: 1px solid #0f2340;
+    border-radius: 4px;
+    min-width: 180px;
+    display: none;
+    z-index: 999;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .lang-dropdown.open { display: block; }
+  .lang-option {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    text-align: left;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #081525;
+    color: #b8cfe0;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 1px;
+  }
+  .lang-option:hover { background: #0a1e35; color: #c9a84c; }
+  .lang-option.active { color: #c9a84c; }
+
+  /* GRAIN OVERLAY */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 14px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(5,13,26,0.99);
+    border-bottom: 1px solid #0f2340;
+    height: 64px;
+  }
+
+  .nav-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 15px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .nav-chapter {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--warm);
+  }
+
+  /* COVER PAGE */
+  #cover {
+    background: radial-gradient(ellipse at 50% 40%, #0a1e35 0%, var(--ink) 65%);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh;
+    padding: calc(var(--nav-h) + 60px) 40px 80px;
+  }
+
+  .anchor-glyph {
+    font-size: 80px;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 48px;
+    animation: float 5s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); opacity: 0.8; }
+    50% { transform: translateY(-10px); opacity: 1; }
+  }
+
+  .book-eyebrow {
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 7px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 20px;
+  }
+
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(64px, 14vw, 130px);
+    font-weight: 300;
+    letter-spacing: 12px;
+    line-height: 0.95;
+    color: var(--paper);
+    margin-bottom: 12px;
+  }
+
+  .cover-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--warm);
+    margin-bottom: 56px;
+    letter-spacing: 1px;
+  }
+
+  .author-line {
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 64px;
+  }
+
+  .author-line span {
+    color: var(--gold);
+  }
+
+  .cover-divider {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 0 auto 48px;
+  }
+
+  .tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--warm);
+    margin-bottom: 56px;
+    letter-spacing: 1px;
+  }
+
+  .begin-btn {
+    display: inline-block;
+    padding: 14px 48px;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .begin-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: -1;
+  }
+
+  .begin-btn:hover {
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+
+  .begin-btn:hover::before {
+    transform: translateX(0);
+  }
+
+  /* CHAPTER PAGES */
+  .chapter-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: calc(var(--nav-h) + 60px);
+    padding-bottom: 80px;
+    padding-left: 40px;
+    padding-right: 40px;
+    background: linear-gradient(160deg, #071828 0%, #050d1a 60%, #040e1f 100%);
+  }
+
+  .chapter-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .chapter-number {
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #5b9fd4;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .chapter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 7vw, 72px);
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: var(--paper);
+    margin-bottom: 48px;
+    line-height: 1.05;
+  }
+
+  .chapter-body p {
+    font-size: 20px;
+    line-height: 2.0;
+    color: #ddeeff;
+    margin-bottom: 28px;
+    font-weight: 300;
+    letter-spacing: 0.2px;
+  }
+
+  .chapter-body p:last-child {
+    margin-bottom: 0;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--gold);
+    font-size: 17px;
+  }
+
+  .chapter-body strong {
+    color: #ffffff;
+    font-weight: 500;
+    text-shadow: 0 0 12px rgba(201,168,76,0.3);
+  }
+
+  /* NAVIGATION CONTROLS */
+  .chapter-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 640px;
+    margin: 56px auto 0;
+    width: 100%;
+  }
+
+  .nav-btn {
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #5b7fa6;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+    padding: 8px 0;
+  }
+
+  .nav-btn:hover { color: var(--gold); }
+  .nav-btn:disabled { opacity: 0.2; cursor: default; }
+
+  .nav-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #1a3050;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dot.active {
+    background: var(--gold);
+    transform: scale(1.5);
+    box-shadow: 0 0 6px rgba(201,168,76,0.5);
+  }
+
+  /* FINAL PAGE */
+  #final {
+    background: radial-gradient(ellipse at 50% 60%, #0a1e35 0%, var(--ink) 65%);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh;
+    padding: calc(var(--nav-h) + 60px) 40px 80px;
+  }
+
+  .final-anchor {
+    font-size: 56px;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 40px;
+    animation: float 5s ease-in-out infinite;
+  }
+
+  .final-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 300;
+    color: var(--paper);
+    margin-bottom: 24px;
+    letter-spacing: 3px;
+  }
+
+  .final-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--warm);
+    margin-bottom: 48px;
+  }
+
+  .final-author {
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 56px;
+  }
+
+  .final-author span { color: var(--gold); }
+
+  .restart-btn {
+    display: inline-block;
+    padding: 12px 36px;
+    border: 1px solid var(--muted);
+    color: var(--warm);
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+  }
+
+  .restart-btn:hover {
+    border-color: var(--gold-dim);
+    color: var(--gold);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--ink); }
+  ::-webkit-scrollbar-thumb { background: #1a3050; border-radius: 2px; }
+
+  @media (max-width: 600px) {
+    nav { padding: 20px 24px; }
+    .chapter-page { padding-top: calc(var(--nav-h) + 50px); padding-left: 24px; padding-right: 24px; padding-bottom: 60px; }
+    #cover, #final { padding: 90px 24px 60px; }
+  }
+</style>
+<style>
+
+<style>
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-title" onclick="goToPage(0)">⚓ The Anchor</div>
+  <div class="nav-chapter" id="nav-label">Book One</div>
+  <div class="translate-wrap" id="translateWrap">
+    <button class="translate-btn" onclick="toggleLangMenu(event)">&#127760; Translate</button>
+    <div class="lang-dropdown" id="langDropdown">
+      <button class="lang-option active" data-lang="en" onclick="setLang('en',this)">English</button>
+      <button class="lang-option" data-lang="es" onclick="setLang('es',this)">Espanol</button>
+      <button class="lang-option" data-lang="fr" onclick="setLang('fr',this)">Francais</button>
+      <button class="lang-option" data-lang="pt" onclick="setLang('pt',this)">Portugues</button>
+      <button class="lang-option" data-lang="de" onclick="setLang('de',this)">Deutsch</button>
+      <button class="lang-option" data-lang="it" onclick="setLang('it',this)">Italiano</button>
+      <button class="lang-option" data-lang="ar" onclick="setLang('ar',this)">Arabic</button>
+      <button class="lang-option" data-lang="zh" onclick="setLang('zh',this)">Chinese</button>
+      <button class="lang-option" data-lang="ja" onclick="setLang('ja',this)">Japanese</button>
+      <button class="lang-option" data-lang="ko" onclick="setLang('ko',this)">Korean</button>
+      <button class="lang-option" data-lang="hi" onclick="setLang('hi',this)">Hindi</button>
+      <button class="lang-option" data-lang="ru" onclick="setLang('ru',this)">Russian</button>
+    </div>
+  </div>
+
+
+</nav>
+
+<!-- COVER -->
+<div class="page active" id="page-0">
+  <div id="cover">
+    <span class="anchor-glyph">⚓</span>
+    <div class="book-eyebrow">Book One</div>
+    <h1 class="cover-title">THE<br>ANCHOR</h1>
+    <p class="cover-subtitle">nine truths for the authentic builder</p>
+    <div class="author-line">by <span>Jessica Chavez aka Tica Rey</span></div>
+    <div class="cover-divider"></div>
+    <p class="tagline">Feed your soul. Be the best you.</p>
+    <button class="begin-btn" onclick="goToPage(1)">Begin Reading</button>
+  </div>
+</div>
+
+<!-- ENTRY 1 -->
+<div class="page" id="page-1">
+<div class="page-scroll-inner">
+  <div class="chapter-page">
+    <div class="chapter-inner">
+      <span class="chapter-number">Entry One</span>
+      <h2 class="chapter-title">Clear Intentions</h2>
+      <div class="chapter-body">
+        <p>Before you build, decide what is steering you.</p>
+        <p>Most people spend their lives chasing goals. Goals are useful. But goals are destinations. Intentions are direction.</p>
+        <p>A destination can change. Direction should not.</p>
+        <p>Why are you building this? Why does it matter? Who are you becoming while you build it?</p>
+        <p>Those questions matter more than timelines and five year plans. Because intentions survive what goals cannot. They survive setbacks. They survive detours. They survive success.</p>
+        <p>Without intention, every opportunity looks important. Every distraction looks urgent. Every opinion sounds like wisdom.</p>
+        <p>With intention, decisions become simpler. You know what belongs. You know what doesn't.</p>
+        <p>And inside that intention there must be patience. Not passive waiting. Active patience. The kind that continues the work without demanding immediate results. The kind that understands a strong foundation is invisible before it is impressive.</p>
+        <p>Be intentional with your time. Be intentional with your energy. Be intentional with your relationships.</p>
+        <p>Build with purpose, not pressure.</p>
+        <p class="closing-line">A destination can change. Direction should not.</p>
+      </div>
+      <div class="chapter-nav">
+        <button class="nav-btn" disabled>Previous</button>
+        <div class="nav-dots" id="dots-1"></div>
+        <button class="nav-btn" onclick="goToPage(2)">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ENTRY 2 -->
+<div class="page" id="page-2">
+<div class="page-scroll-inner">
+  <div class="chapter-page">
+    <div class="chapter-inner">
+      <span class="chapter-number">Entry Two</span>
+      <h2 class="chapter-title">What This Is</h2>
+      <div class="chapter-body">
+        <p>This book is not a map. It is a mirror.</p>
+        <p>You picked it up because something in you already knows you are capable of more than one thing. You already feel it. And somewhere else inside you, people have told you that's impossible. Too ambitious. Too much.</p>
+        <p>This book exists to tell you the feeling is real. You are capable of more than people think. More than you know.</p>
+        <p>You are not greedy. You are not spreading yourself too thin. You are expanding into who you actually are.</p>
+        <p>Not everyone will understand your vision. That is okay. Have compassion for them. They are operating from a different frequency. Their inability to see what you see is not a failure on your part. It is simply the nature of the territory you are walking into.</p>
+        <p>Don't take it personal. You don't have time to waste your thoughts on things that don't feed you. You are carrying something heavier than most. A vision that spans multiple worlds, multiple expressions of yourself. That comes with its own weight. Its own crown.</p>
+        <p>Stay focused. Stay compassionate. Keep going.</p>
+        <p class="closing-line">This book is not a map. It is a mirror.</p>
+      </div>
+      <div class="chapter-nav">
+        <button class="nav-btn" onclick="goToPage(1)">Previous</button>
+        <div class="nav-dots" id="dots-2"></div>
+        <button class="nav-btn" onclick="goToPage(3)">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ENTRY 3 -->
+<div class="page" id="page-3">
+<div class="page-scroll-inner">
+  <div class="chapter-page">
+    <div class="chapter-inner">
+      <span class="chapter-number">Entry Three</span>
+      <h2 class="chapter-title">Foundation</h2>
+      <div class="chapter-body">
+        <p>You cannot build a meaningful life on borrowed values.</p>
+        <p>Before you build anything, know who you are. Not your resume. Not your goals. Not the version of yourself you perform for other people.</p>
+        <p>Who are you when nobody is watching?</p>
+        <p>What moves you? What do you believe in when there is nothing to prove? What makes you feel alive even when everything around you is chaos?</p>
+        <p>Have you given yourself time to answer that?</p>
+        <p>Because you can get everything you want and still lose yourself in it. People reach the goal. The money, the recognition, the thing they always said they wanted. And they stand there empty because they built toward something external instead of building from something internal.</p>
+        <p>That is the trap.</p>
+        <p>If your foundation is shaky, if you are chasing someone else's definition of success, someone else's version of what you should be, then when you get there you won't recognize yourself.</p>
+        <p>But if you know who you are? If you have sat with yourself long enough to understand your own heart, your own values, your own truth? Nothing can shake you loose. No success. No failure. No opinion.</p>
+        <p>That becomes your anchor.</p>
+        <p class="closing-line">You cannot build a meaningful life on borrowed values.</p>
+      </div>
+      <div class="chapter-nav">
+        <button class="nav-btn" onclick="goToPage(2)">Previous</button>
+        <div class="nav-dots" id="dots-3"></div>
+        <button class="nav-btn" onclick="goToPage(4)">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ENTRY 4 -->
+<div class="page" id="page-4">
+<div class="page-scroll-inner">
+  <div class="chapter-page">
+    <div class="chapter-inner">
+      <span class="chapter-number">Entry Four</span>
+      <h2 class="chapter-title">Your Talents</h2>
+      <div class="chapter-body">
+        <p>Honesty about your starting point is the beginning of mastery.</p>
+        <p>Knowing who you are is step one. Knowing what you are actually good at is step two.</p>
+        <p>And here is where most people lie to themselves.</p>
+        <p>They confuse passion with skill. They confuse interest with talent. They want to be good at something so badly they convince themselves they already are. And then they waste time and energy building on a foundation of delusion.</p>
+        <p>Be brutally honest with yourself. What are you actually talented at right now? Not what you wish you were good at. Not what sounds impressive. What comes naturally? What do people come to you for?</p>
+        <p>But hear this. If something doesn't come naturally, that doesn't mean you can't master it. I've seen people start from zero and become exceptional through relentless practice. Through showing up. Through being willing to be bad at it first and staying committed anyway.</p>
+        <p>The difference is they were honest about where they started. They knew it would take extra time, extra effort, extra repetition. And they did it anyway because the vision was worth it.</p>
+        <p>Find that intersection. Who you are, what you are genuinely skilled at or willing to master, what you actually want to build. Be real about the gap. Be real about the work required.</p>
+        <p>That is where your real strategy begins.</p>
+        <p class="closing-line">Honesty about your starting point is the beginning of mastery.</p>
+      </div>
+      <div class="chapter-nav">
+        <button class="nav-btn" onclick="goToPage(3)">Previous</button>
+        <div class="nav-dots" id="dots-4"></div>
+        <button class="nav-btn" onclick="goToPage(5)">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ENTRY 5 -->
+<div class="page" id="page-5">
+<div class="page-scroll-inner">
+  <div class="chapter-page">
+    <div class="chapter-inner">
+      <span class="chapter-number">Entry Five</span>
+      <h2 class="chapter-title">Ideas</h2>
+      <div class="chapter-body">
+        <p>Not every idea deserves your life.</p>
+        <p>You will get ideas constantly. Some will come from inspiration. Some from fear. Some from watching what other people are doing and thinking you should do it too.</p>
+        <p>But the ones that matter? The ones worth your time and energy? They are the ones that align with who you actually are and what you are naturally drawn to.</p>
+        <p>Pay attention to what comes naturally. What do you create without being taught? What lights you up without requiring external motivation? What feels like an extension of who you are instead of a role you are playing?</p>
+        <p>Those are your ideas.</p>
+        <p>But if an idea calls to you and the talent isn't there yet, that is not a no. That is a different kind of yes. A yes that will take extra time, extra practice, extra commitment. If you are willing to put in that work, go for it.</p>
+        <p>The difference is knowing the cost. Being honest about what you are signing up for. Not wasting yourself on ideas that don't actually matter to you.</p>
+        <p>Prioritize what comes naturally. But don't kill ideas that call to your soul just because the path is longer.</p>
+        <p class="closing-line">Not every idea deserves your life.</p>
+      </div>
+      <div class="chapter-nav">
+        <button class="nav-btn" onclick="goToPage(4)">Previous</button>
+        <div class="nav-dots" id="dots-5"></div>
+        <button class="nav-btn" onclick="goToPage(6)">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ENTRY 6 -->
+<div class="page" id="page-6">
+<div class="page-scroll-inner">
+  <div class="chapter-page">
+    <div class="chapter-inner">
+      <span class="chapter-number">Entry Six</span>
+      <h2 class="chapter-title">Time</h2>
+      <div class="chapter-body">
+        <p>Every yes is a no to something else.</p>
+        <p>Time is the one resource you cannot buy back. You can make more money. Find new opportunities. Start over. But you cannot make more time. Once it is gone it is gone.</p>
+        <p>So how you spend your time is how you spend your life.</p>
+        <p>Most people say yes to everything because they want to help, because they don't want to disappoint. And then they wonder why they never made progress on their real vision.</p>
+        <p>Here is the hard truth. You cannot say yes to everything. Even when you want to. Even when it would make other people happy.</p>
+        <p>Be intentional about what you say yes to. What aligns with your vision? What feeds your foundation? What actually moves you forward? Say yes to that. Say no to everything else.</p>
+        <p>Some people will take that no personally. They won't understand why your time isn't theirs to claim. Have compassion for that. They are operating from a place where they don't see what you see. But don't let their hurt stop you from protecting what is yours.</p>
+        <p>There is a time for everything. Trust that you are on time. Even when it doesn't feel like it.</p>
+        <p>Your vision requires it. Your sanity requires it. Your life requires it.</p>
+        <p class="closing-line">Every yes is a no to something else.</p>
+      </div>
+      <div class="chapter-nav">
+        <button class="nav-btn" onclick="goToPage(5)">Previous</button>
+        <div class="nav-dots" id="dots-6"></div>
+        <button class="nav-btn" onclick="goToPage(7)">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ENTRY 7 -->
+<div class="page" id="page-7">
+<div class="page-scroll-inner">
+  <div class="chapter-page">
+    <div class="chapter-inner">
+      <span class="chapter-number">Entry Seven</span>
+      <h2 class="chapter-title">The Anchor</h2>
+      <div class="chapter-body">
+        <p>An anchor doesn't stop movement. It stops drifting.</p>
+        <p>You are enough. Right now, exactly as you are, you are enough to start.</p>
+        <p>You know yourself. You believe in yourself. You have done the work to understand your foundation, your talents, your real vision. That is not nothing. That is everything.</p>
+        <p>So when the doubt comes, and it will come, remember this. You are not alone. There are other authentic souls doing exactly what you are doing. Grinding from love, not ego. Building with their whole heart. You are part of that. You are part of something real.</p>
+        <p>Keep going. Not because it is easy. Because it is yours. Some days that looks like massive progress. Some days it looks like showing up and doing one small thing.</p>
+        <p>Both count. Both matter.</p>
+        <p>Trust the process. Everything happening right now, the detours, the timing, the moments that don't feel productive, it is all building you into who you need to be to carry what you are building.</p>
+        <p>Allow yourself to heal. Healing is not separate from the work. It is part of becoming your best self. Tend to yourself with the same care you give your vision.</p>
+        <p>You are on time. You are enough. You are not alone.</p>
+        <p>The struggle will come. Let the art of struggle make you better.</p>
+        <p class="closing-line">An anchor doesn't stop movement. It stops drifting.</p>
+      </div>
+      <div class="chapter-nav">
+        <button class="nav-btn" onclick="goToPage(6)">Previous</button>
+        <div class="nav-dots" id="dots-7"></div>
+        <button class="nav-btn" onclick="goToPage(8)">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ENTRY 8 -->
+<div class="page" id="page-8">
+<div class="page-scroll-inner">
+  <div class="chapter-page">
+    <div class="chapter-inner">
+      <span class="chapter-number">Entry Eight</span>
+      <h2 class="chapter-title">Patience Is a Superpower</h2>
+      <div class="chapter-body">
+        <p>Patience is movement without panic.</p>
+        <p>Let's be clear about what patience is not. It is not waiting. It is not stalling. It is not hiding behind trusting the process when what you actually need to do is move.</p>
+        <p>That is fear wearing spiritual clothing.</p>
+        <p>Real patience is active. It is showing up every single day and doing the work while trusting the timing will align. It is moving with intention while releasing the need to control the outcome.</p>
+        <p>Patience means you don't rush the wrong things. You don't force doors that aren't ready to open. You don't sacrifice the quality of what you are building just to say you finished fast.</p>
+        <p>But patience also means you don't use the process as a crutch. You don't keep preparing forever. You don't stay comfortable in the becoming and never actually arrive.</p>
+        <p>Know the difference. Are you being patient or are you procrastinating? Are you trusting the process or are you afraid to launch?</p>
+        <p>Be honest with yourself.</p>
+        <p>Patience keeps you grounded when everyone around you is reactive. It keeps you focused when distractions are everywhere. It keeps you sane when the timeline doesn't look the way you expected.</p>
+        <p>Use it wisely. Use it with intention. But never use it as an excuse to stop moving.</p>
+        <p class="closing-line">Patience is movement without panic.</p>
+      </div>
+      <div class="chapter-nav">
+        <button class="nav-btn" onclick="goToPage(7)">Previous</button>
+        <div class="nav-dots" id="dots-8"></div>
+        <button class="nav-btn" onclick="goToPage(9)">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ENTRY 9 -->
+<div class="page" id="page-9">
+<div class="page-scroll-inner">
+  <div class="chapter-page">
+    <div class="chapter-inner">
+      <span class="chapter-number">Entry Nine</span>
+      <h2 class="chapter-title">Beyond What Seems Possible</h2>
+      <div class="chapter-body">
+        <p>Your limits are often inherited before they are tested.</p>
+        <p>You are capable of more than you have been told. More than you have been shown. More than you currently believe.</p>
+        <p>Most people operate inside the limits handed to them. The limits of their environment, their upbringing, what they have seen done before. And because they have never seen it, they don't believe it is possible. So they never try.</p>
+        <p>But you are reading this because something in you refuses to accept those limits.</p>
+        <p>Push past what seems humanly possible. Not recklessly, but intentionally. With your foundation solid, your talents sharp, your vision clear. Push past the version of yourself that plays it safe. Push past the doubt that says you are doing too much. Push past the exhaustion that tells you to quit right before the breakthrough.</p>
+        <p>The things worth building have never been done exactly the way you are going to do them. Your combination of talents, vision, experience, and heart is singular. Nobody has ever been exactly you, building exactly this, in exactly this moment.</p>
+        <p>That is not pressure. That is power.</p>
+        <p>So go further. Dream bigger. Build bolder. Become someone even you didn't know was possible.</p>
+        <p>You were never meant to fit inside someone else's idea of what's possible.</p>
+        <p class="closing-line">Your limits are often inherited before they are tested.</p>
+      </div>
+      <div class="chapter-nav">
+        <button class="nav-btn" onclick="goToPage(8)">Previous</button>
+        <div class="nav-dots" id="dots-9"></div>
+        <button class="nav-btn" onclick="goToPage(10)">Finish</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- FINAL PAGE -->
+<div class="page" id="page-10">
+<div class="page-scroll-inner">
+  <div id="final">
+    <span class="final-anchor">⚓</span>
+    <h2 class="final-title">THE ANCHOR</h2>
+    <p class="final-tagline">Feed your soul. Be the best you.</p>
+    <div class="final-author">by <span>Jessica Chavez aka Tica Rey</span></div>
+    <button class="restart-btn" onclick="goToPage(0)">Read Again</button>
+  </div>
+</div>
+</div>
+<script>
+var T = {
+  en: { eyebrow:"Book One", subtitle:"nine truths for the authentic builder", author:"by Jessica Chavez aka Tica Rey", tagline:"Feed your soul. Be the best you.", btn:"Begin Reading", ftitle:"THE ANCHOR", ftagline:"Feed your soul. Be the best you.", fbtn:"Read Again" },
+  es: { eyebrow:"Libro Uno", subtitle:"nueve verdades para el constructor autentico", author:"por Jessica Chavez aka Tica Rey", tagline:"Alimenta tu alma. Se la mejor version de ti.", btn:"Comenzar a leer", ftitle:"EL ANCLA", ftagline:"Alimenta tu alma. Se la mejor version de ti.", fbtn:"Leer de nuevo" },
+  fr: { eyebrow:"Livre Un", subtitle:"neuf verites pour le batisseur authentique", author:"par Jessica Chavez aka Tica Rey", tagline:"Nourris ton ame. Sois le meilleur de toi-meme.", btn:"Commencer la lecture", ftitle:"L'ANCRE", ftagline:"Nourris ton ame. Sois le meilleur de toi-meme.", fbtn:"Relire" },
+  pt: { eyebrow:"Livro Um", subtitle:"nove verdades para o construtor autentico", author:"por Jessica Chavez aka Tica Rey", tagline:"Alimente sua alma. Seja o melhor de voce.", btn:"Comecar a ler", ftitle:"A ANCORA", ftagline:"Alimente sua alma. Seja o melhor de voce.", fbtn:"Ler novamente" },
+  de: { eyebrow:"Buch Eins", subtitle:"neun Wahrheiten fuer den authentischen Erbauer", author:"von Jessica Chavez aka Tica Rey", tagline:"Naehre deine Seele. Sei dein bestes Ich.", btn:"Mit dem Lesen beginnen", ftitle:"DER ANKER", ftagline:"Naehre deine Seele. Sei dein bestes Ich.", fbtn:"Nochmals lesen" },
+  it: { eyebrow:"Libro Uno", subtitle:"nove verita per il costruttore autentico", author:"di Jessica Chavez aka Tica Rey", tagline:"Nutri la tua anima. Sii il meglio di te.", btn:"Inizia a leggere", ftitle:"L'ANCORA", ftagline:"Nutri la tua anima. Sii il meglio di te.", fbtn:"Rileggi" },
+  ar: { eyebrow:"الكتاب الاول", subtitle:"تسع حقائق للبناء الاصيل", author:"بقلم جيسيكا شافيز - تيكا ري", tagline:"اغذِ روحك. كن افضل نسخة منك.", btn:"ابدا القراءة", ftitle:"المرساة", ftagline:"اغذِ روحك. كن افضل نسخة منك.", fbtn:"اقرا مرة اخرى" },
+  zh: { eyebrow:"第一册", subtitle:"给真实建设者的九条真理", author:"作者：杰西卡·查韦斯 aka Tica Rey", tagline:"滋养你的灵魂。成为最好的自己。", btn:"开始阅读", ftitle:"锚", ftagline:"滋养你的灵魂。成为最好的自己。", fbtn:"再读一遍" },
+  ja: { eyebrow:"第一巻", subtitle:"本物の建設者への九つの真実", author:"著者：ジェシカ・チャベス aka ティカ・レイ", tagline:"魂を養え。最高の自分になれ。", btn:"読み始める", ftitle:"アンカー", ftagline:"魂を養え。最高の自分になれ。", fbtn:"もう一度読む" },
+  ko: { eyebrow:"첫 번째 책", subtitle:"진정한 건축가를 위한 아홉 가지 진실", author:"저자: 제시카 차베스 aka 티카 레이", tagline:"영혼을 채워라. 최고의 자신이 되어라.", btn:"읽기 시작", ftitle:"닻", ftagline:"영혼을 채워라. 최고의 자신이 되어라.", fbtn:"다시 읽기" },
+  hi: { eyebrow:"पुस्तक एक", subtitle:"प्रामाणिक निर्माता के लिए नौ सत्य", author:"लेखक: जेसिका चावेज़ उर्फ टिका रे", tagline:"अपनी आत्मा को पोषित करो।", btn:"पढ़ना शुरू करें", ftitle:"लंगर", ftagline:"अपनी आत्मा को पोषित करो।", fbtn:"फिर से पढ़ें" },
+  ru: { eyebrow:"Книга Первая", subtitle:"девять истин для настоящего строителя", author:"автор: Джессика Чавес aka Тика Рей", tagline:"Питай свою душу. Будь лучшей версией себя.", btn:"Начать чтение", ftitle:"ЯКОРЬ", ftagline:"Питай свою душу. Будь лучшей версией себя.", fbtn:"Читать снова" }
+};
+
+var CH = {
+  en: [
+    { num:"Entry One", title:"Clear Intentions", body:["Before anything else, get clear on your intentions.","Not your goals. Not your five year plan. Your intentions. Why are you doing this? What are you actually building toward? What kind of person do you want to be in the process of getting there?","Because here's what most people skip: they start moving before they know why they're moving. They chase things without being clear on what they actually want or who they actually are. And then they wonder why they feel lost even when things are going well.","Intention is the compass. It guides every decision. What you say yes to, what you say no to, who you let into your space, how you spend your time. Without it, you're just reacting to life instead of creating it.","And inside that intention, there has to be patience. Not passive waiting, but active patience. The kind that trusts the process while staying focused and present. The kind that understands that real things take time to build, and rushing just to say you got there faster only costs you in ways you can't see yet.","Be intentional about everything. What you build. How you build it. How you treat yourself in the process.","That's where it all starts."] },
+    { num:"Entry Two", title:"What This Is", body:["This book is not my story. This is your permission slip.","You picked this up because somewhere inside you, you already know you're capable of more than one thing. You already feel it. And somewhere else inside you, people have told you that's impossible, or reckless, or too ambitious. Maybe they laughed. Maybe they just shook their head.","This book exists to tell you that the feeling is real. You're capable of more than people think. More than you know.","You're not greedy. You're not spreading yourself too thin. You're expanding into who you actually are.","But here's what comes with that: not everyone will understand your vision. And that's okay. Have compassion for them. They're operating from a different frequency, a different understanding of what's possible. Their inability to see what you see isn't a failure on your part. It's just the nature of the territory you're walking into.","Don't take it personal. You don't have time to waste your thoughts on things that don't feed you. You're carrying something heavier than most. A vision that spans multiple worlds, multiple expressions of yourself. That comes with its own weight, its own crown.","Stay focused. Stay compassionate. Keep going.","This book is for the ones who can't stop even if they tried. It's here to remind you that you're not alone in that."] },
+    { num:"Entry Three", title:"Foundation", body:["Before you build anything, know who you are.","Not your resume. Not your goals. Not the version of yourself you perform for other people. Who are you really? What moves you? What do you believe in when nobody is watching? What makes you feel alive even when everything around you is chaos?","Have you given yourself time to answer that?","Because you can get everything you want and still lose yourself in it. I've seen it happen. People reach the goal. The money, the recognition, the thing they said they always wanted. And they're standing there empty because they built toward something external instead of building from something internal.","That's the trap.","Everything you build will carry your foundation. If that foundation is shaky, if you're chasing someone else's definition of success, someone else's version of what you should be, then when you get there, you won't recognize yourself.","But if you know who you are? If you've sat with yourself long enough to understand your own heart, your own values, your own truth? That becomes your anchor. No amount of success can shake you loose from yourself. No failure can take you out completely.","You know who you are. You know why you're building. And that changes everything.","Take the time. Do the work. Know yourself first. Build from there."] },
+    { num:"Entry Four", title:"Your Talents", body:["Knowing who you are is step one. Knowing what you're actually good at is step two.","And here's where most people lie to themselves.","They confuse passion with skill. They confuse interest with talent. They want to be good at something so badly that they convince themselves they already are, and then they waste time and energy on a foundation of delusion.","Be brutally honest with yourself. What are you actually talented at right now? Not what do you wish you were good at. Not what sounds impressive. What comes naturally? What do people come to you for?","But hear this: if something doesn't come naturally, that doesn't mean you can't master it. I've seen people start from zero at something and become exceptional through relentless practice. Through showing up. Through being willing to be bad at it first and staying committed anyway.","The difference is they were honest about where they started. They knew it would take extra time, extra effort, extra repetition. And they did it anyway because the vision was worth it.","So find that intersection. Who you are, what you're genuinely skilled at or willing to master, what you actually want to build. Look at the gap between where you are and where you need to be. Be real about the work required.","That's where your real strategy begins.","Everything else is just noise."] },
+    { num:"Entry Five", title:"Ideas", body:["Not every idea is yours to build.","You'll get ideas constantly. Some will come from inspiration. Some will come from fear. Some will come from watching what other people are doing and thinking you should do it too.","But the ones that matter? The ones worth your time and energy? They're the ones that align with who you actually are and what you're naturally drawn to.","Pay attention to what comes naturally to you. What do you create without being taught? What lights you up without requiring external motivation? What feels like an extension of who you are instead of a role you're playing?","Those are your ideas.","But if an idea calls to you and your talent isn't there yet? That's not a no. That's just a different kind of yes. That's a yes, but it's going to take extra time, extra practice, extra commitment. And if you're willing to put in that work, then go for it.","The difference is knowing the cost. Being honest about what you're signing up for. Not pretending you're naturally good at something when you're not. Not wasting time on ideas that don't actually matter to you.","Prioritize what comes naturally. But don't kill ideas that call to your soul just because the path is longer.","Be strategic. Be honest. Be willing to invest."] },
+    { num:"Entry Six", title:"Time", body:["Time is the one resource you can't buy back.","You can make more money. You can find new opportunities. You can start over. But you can't make more time. Once it's gone, it's gone.","So how you spend your time is how you spend your life.","Most people don't know how to use their time strategically. They say yes to everything because they want to help, because they don't want to let people down. And then they wonder why they never made progress on their real vision.","Here's the hard truth: you can't say yes to everything. Even when you want to. Even when it would make other people happy.","You have to be intentional about what you say yes to. What aligns with your vision? What feeds your foundation? What actually moves you forward? Say yes to that. Say no to everything else.","And know this. Some people will take that no personal. They won't understand why you can't help them, why you can't be available, why your time isn't theirs to claim. Have compassion for that. They're operating from a place where they don't see what you see.","But don't let their hurt stop you from protecting your time.","There's a time for everything. Trust that you're on time. Even when it doesn't feel like it. Be mindful of what deserves your energy and what doesn't.","Your vision requires it. Your sanity requires it. Your life requires it.","Be intentional. Be kind. Be firm."] },
+    { num:"Entry Seven", title:"The Anchor", body:["You are enough. Right now, exactly as you are, you're enough to start.","You know yourself. You believe in yourself. You've done the work to understand your foundation, your talents, your real vision. That's not nothing. That's everything.","So when the doubt comes, and it will come, remember this: you're not the first person on this route. You're not alone in the weight of carrying multiple visions. There are other authentic souls doing exactly what you're doing. Grinding from love, not ego. Building with their whole heart.","You're part of that. You're part of something real.","Keep going. Not because it's easy. Because it's yours. Because you know who you are and you're building from that truth. Some days that looks like massive progress. Some days it looks like showing up and doing one small thing.","Both count. Both matter.","Trust the process. Everything happening right now, the detours, the timing, the moments that don't feel productive, it's all building you into who you need to be to carry what you're building.","Allow yourself to heal. Healing is part of becoming your best self. Don't rush past the pain. Don't ignore what needs to be repaired. Tend to yourself with the same care you give your vision.","You're on time. You're enough. You're not alone.","The struggle will come. Let the art of struggle make you better.","Believe in yourself. Keep going."] },
+    { num:"Entry Eight", title:"Patience Is a Superpower", body:["Patience is not waiting. Let's be clear about that.","Too many people confuse patience with stalling. They say they're being patient when really they're being afraid. They hide behind trusting the process when what they actually need to do is move. That's not patience. That's avoidance dressed up in spiritual language.","Real patience is active. It's showing up every single day and doing the work while trusting that the timing will align. It's not sitting still. It's moving with intention while releasing the need to control the outcome.","Patience means you don't rush the wrong things. You don't force doors that aren't ready to open. You don't sacrifice the quality of what you're building just to say you finished fast.","But patience also means you don't use the process as a crutch. You don't keep preparing forever. You don't stay comfortable in the becoming and never actually arrive.","Know the difference. Are you being patient or are you procrastinating? Are you trusting the process or are you afraid to launch? Be honest with yourself.","Patience used correctly is a superpower. It keeps you grounded when everyone around you is reactive. It keeps you focused when distractions are everywhere. It keeps you sane when the timeline doesn't look the way you expected.","Use it wisely. Use it with intention.","But never use it as an excuse to stop moving."] },
+    { num:"Entry Nine", title:"Beyond What Seems Possible", body:["You are capable of more than you have been told. More than you have been shown. More than you currently believe.","Most people operate inside the limits that were handed to them. The limits of their environment, their upbringing, what they've seen done before. And because they've never seen it, they don't believe it's possible. So they never try.","But you are reading this because something in you refuses to accept those limits.","Push past what seems humanly possible. Not recklessly, but intentionally. With your foundation solid, your talents sharp, your vision clear. Push past the version of yourself that plays it safe. Push past the doubt that tells you you're doing too much. Push past the exhaustion that tells you to quit right before the breakthrough.","The things worth building have never been done exactly the way you're going to do them. Your combination of talents, vision, experience, and heart is singular. Nobody has ever been exactly you, building exactly this, in exactly this moment.","That's not pressure. That's power.","So go further. Dream bigger. Build bolder. Become someone even you didn't know was possible.","You were never meant to fit inside someone else's idea of what's possible.","Go beyond it."] }
+  ],
+  es: [
+    { num:"Entrada Uno", title:"Intenciones Claras", body:["Antes que nada, ten claras tus intenciones.","No tus metas. No tu plan de cinco anos. Tus intenciones. Por que haces esto? Hacia que estas construyendo? Que tipo de persona quieres ser en el proceso?","Porque la mayoria empieza a moverse antes de saber por que se mueve. Persiguen cosas sin claridad sobre quienes son. Y luego se preguntan por que se sienten perdidos.","La intencion es la brujula. Guia cada decision. Sin ella, solo reaccionas a la vida en lugar de crearla.","Dentro de esa intencion debe haber paciencia. No espera pasiva, sino paciencia activa. La que confia en el proceso mientras permanece enfocada y presente.","Se intencional en todo. Lo que construyes. Como lo construyes. Como te tratas en el proceso.","Ahi es donde todo comienza."] },
+    { num:"Entrada Dos", title:"De Que Se Trata", body:["Este libro no es mi historia. Es tu permiso.","Lo tomaste porque dentro de ti ya sabes que eres capaz de mas de una cosa. Ya lo sientes. Y la gente te ha dicho que es imposible o demasiado ambicioso.","Este libro existe para decirte que el sentimiento es real. Eres capaz de mas de lo que la gente piensa. Mas de lo que sabes.","No eres codicioso. No te estas dispersando. Te estas expandiendo hacia quien realmente eres.","No todos entenderan tu vision. Esta bien. Ten compasion. No te lo tomes personal.","No tienes tiempo para desperdiciar pensamientos en cosas que no te alimentan. Llevas algo mas pesado que la mayoria. Una vision que abarca multiples mundos.","Mantente enfocado. Compasivo. Sigue adelante.","Este libro es para los que no pueden detenerse aunque lo intentaran."] },
+    { num:"Entrada Tres", title:"Fundamento", body:["Antes de construir, conocete a ti mismo.","No tu curriculum. Quien eres realmente? Que te mueve? En que crees cuando nadie mira?","Te has dado tiempo para responder eso?","Puedes obtener todo y aun asi perderte en ello. La gente alcanza la meta y esta vacia porque construyo hacia afuera en lugar de desde adentro.","Esa es la trampa.","Todo lo que construyas llevara tu fundamento. Si es inestable, cuando llegues, no te reconoceras.","Pero si sabes quien eres, eso se convierte en tu ancla.","Sabes quien eres. Sabes por que construyes. Eso lo cambia todo.","Tomate el tiempo. Haz el trabajo. Conocete primero. Construye desde ahi."] },
+    { num:"Entrada Cuatro", title:"Tus Talentos", body:["Saber quien eres es el paso uno. Saber en que eres bueno es el paso dos.","Aqui es donde la mayoria se miente a si misma.","Confunden pasion con habilidad. Quieren ser buenos en algo y se convencen de que ya lo son.","Se honesto contigo mismo. En que tienes talento ahora mismo? Que viene naturalmente? Para que acude la gente a ti?","Si algo no viene naturalmente, eso no significa que no puedas dominarlo. He visto personas empezar de cero y volverse excepcionales.","La diferencia es que fueron honestos sobre donde comenzaron.","Encuentra esa interseccion. Quien eres, en que eres habil, lo que quieres construir.","Ahi comienza tu verdadera estrategia.","Todo lo demas es ruido."] },
+    { num:"Entrada Cinco", title:"Ideas", body:["No todas las ideas son tuyas para construir.","Tendras ideas constantemente. Algunas de la inspiracion. Algunas del miedo.","Las que importan son las que se alinean con quien realmente eres.","Que creas sin que te ensenaron? Que te ilumina sin motivacion externa? Que se siente como una extension de ti?","Esas son tus ideas.","Si una idea te llama y el talento no esta todavia, eso no es un no. Es un si diferente, que tomara tiempo extra.","La diferencia es conocer el costo. Ser honesto sobre lo que te comprometes.","Prioriza lo que viene naturalmente. Pero no mates ideas que llaman a tu alma.","Se estrategico. Honesto. Dispuesto a invertir."] },
+    { num:"Entrada Seis", title:"El Tiempo", body:["El tiempo es el unico recurso que no puedes recuperar.","Puedes ganar mas dinero. Puedes encontrar nuevas oportunidades. Pero no puedes hacer mas tiempo.","Como gastas tu tiempo es como gastas tu vida.","La mayoria dice si a todo porque quiere ayudar. Y luego se pregunta por que nunca avanza.","La dura verdad: no puedes decir si a todo.","Se intencional sobre a que dices si. Di si a lo que se alinea con tu vision. Di no a todo lo demas.","Algunas personas tomaran ese no de forma personal. Ten compasion. No dejes que su dolor te impida proteger tu tiempo.","Hay un tiempo para todo. Confia en que estas a tiempo.","Tu vision lo requiere. Tu cordura lo requiere. Tu vida lo requiere.","Se intencional. Amable. Firme."] },
+    { num:"Entrada Siete", title:"El Ancla", body:["Eres suficiente. Ahora mismo, exactamente como eres.","Te conoces. Crees en ti mismo. Has hecho el trabajo.","Cuando llegue la duda, recuerda: no estas solo. Hay otras almas autenticas haciendo exactamente lo que tu haces.","Eres parte de algo real.","Sigue adelante. No porque sea facil. Porque es tuyo.","Ambos cuentan. Ambos importan.","Confia en el proceso. Todo te esta construyendo.","Permitete sanar. La sanacion es parte de convertirte en tu mejor yo.","Estas a tiempo. Eres suficiente. No estas solo.","La lucha vendra. Deja que el arte de la lucha te haga mejor.","Cree en ti mismo. Sigue adelante."] },
+    { num:"Entrada Ocho", title:"La Paciencia Es un Superpoder", body:["La paciencia no es esperar. Seamos claros.","Muchos confunden paciencia con paralisis. Dicen tener paciencia cuando en realidad tienen miedo.","La paciencia real es activa. Es presentarse cada dia y hacer el trabajo mientras confias en el momento.","La paciencia significa no apresurar las cosas equivocadas. No forzar puertas que no estan listas.","Pero tambien significa no usar el proceso como muleta. No prepararse para siempre.","Conoce la diferencia. Eres paciente o estas procrastinando?","La paciencia usada correctamente es un superpoder. Te mantiene centrado.","Usala sabiamente. Con intencion.","Pero nunca como excusa para dejar de moverte."] },
+    { num:"Entrada Nueve", title:"Mas Alla de Lo Posible", body:["Eres capaz de mas de lo que te han dicho. Mas de lo que crees.","La mayoria opera dentro de los limites que le fueron dados.","Pero estas leyendo esto porque algo en ti se niega a aceptar esos limites.","Supera lo que parece humanamente posible. No imprudentemente, sino intencionalmente.","Las cosas que vale la pena construir nunca se han hecho exactamente como tu las haras.","Eso no es presion. Es poder.","Ve mas lejos. Suena mas grande. Construye con mas audacia.","Nunca estuviste destinado a encajar en la idea de otro sobre lo posible.","Ve mas alla."] }
+  ]
+};
+
+// For other languages fall back to English chapters
+["fr","pt","de","it","ar","zh","ja","ko","hi","ru"].forEach(function(l){ CH[l] = CH.en; });
+
+var currentLang = 'en';
+
+function toggleLangMenu(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('langDropdown');
+  dd.classList.contains('open') ? dd.classList.remove('open') : dd.classList.add('open');
+}
+
+document.addEventListener('click', function() {
+  var dd = document.getElementById('langDropdown');
+  if (dd) dd.classList.remove('open');
+});
+
+function setLang(lang, btn) {
+  document.getElementById('langDropdown').classList.remove('open');
+  document.querySelectorAll('.lang-option').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  currentLang = lang;
+  var t = T[lang] || T.en;
+  var ch = CH[lang] || CH.en;
+
+  // UI strings
+  var ui = document.querySelector('.book-eyebrow'); if(ui) ui.textContent = t.eyebrow;
+  var cs = document.querySelector('.cover-subtitle'); if(cs) cs.textContent = t.subtitle;
+  var ct = document.querySelector('.cover-tagline'); if(ct) ct.textContent = t.tagline;
+  var bb = document.querySelector('.begin-btn'); if(bb) bb.textContent = t.btn;
+  var ft = document.querySelector('.final-title'); if(ft) ft.textContent = t.ftitle;
+  var fg = document.querySelector('.final-tagline'); if(fg) fg.textContent = t.ftagline;
+  var rb = document.querySelector('.restart-btn'); if(rb) rb.textContent = t.fbtn;
+  document.querySelectorAll('.author-line, .final-author').forEach(function(el){
+    el.innerHTML = t.author.replace('Jessica Chavez', '<span>Jessica Chavez') + (t.author.includes('aka') ? '' : '') ;
+    el.textContent = t.author;
+  });
+
+  // Chapters
+  ch.forEach(function(c, i) {
+    var pg = document.getElementById('page-' + (i+1));
+    if (!pg) return;
+    var ne = pg.querySelector('.chapter-number'); if(ne) ne.textContent = c.num;
+    var te = pg.querySelector('.chapter-title'); if(te) te.textContent = c.title;
+    var be = pg.querySelector('.chapter-body');
+    if (be) {
+      be.innerHTML = '';
+      c.body.forEach(function(para, pi) {
+        var p = document.createElement('p');
+        if (pi === c.body.length - 1) p.className = 'closing-line';
+        p.textContent = para;
+        be.appendChild(p);
+      });
+    }
+  });
+}
+
+// PAGE NAVIGATION
+var TOTAL_PAGES = 11;
+var LABELS = ['Book One','Entry One','Entry Two','Entry Three','Entry Four','Entry Five','Entry Six','Entry Seven','Entry Eight','Entry Nine','The End'];
+var current = 0;
+
+function buildDots(id, cur) {
+  var c = document.getElementById(id);
+  if (!c) return;
+  c.innerHTML = '';
+  for (var i = 1; i <= 9; i++) {
+    var d = document.createElement('div');
+    d.className = 'dot' + (i === cur ? ' active' : '');
+    (function(n){ d.onclick = function(){ goToPage(n); }; })(i);
+    c.appendChild(d);
+  }
+}
+
+function goToPage(index) {
+  var pages = document.querySelectorAll('.page');
+  pages[current].classList.remove('active');
+  pages[index].classList.add('active');
+  // Scroll the inner scroll container to top
+  var inner = pages[index].querySelector('.page-scroll-inner');
+  if (inner) {
+    inner.scrollTop = 0;
+  } else {
+    pages[index].scrollTop = 0;
+  }
+  current = index;
+  document.getElementById('nav-label').textContent = LABELS[index];
+  if (index >= 1 && index <= 9) buildDots('dots-' + index, index);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { if (current < TOTAL_PAGES-1) goToPage(current+1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if (current > 0) goToPage(current-1); }
+});
+
+for (var i = 1; i <= 9; i++) buildDots('dots-'+i, i);
+</script>
+</body>
+</html>
