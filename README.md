@@ -2,7 +2,7 @@
 
 > *Feed your soul. Be the best you.*
 
-**By Jessica Chavez aka Tica Rey**
+**By Tica Rey**
 
 ---
 
