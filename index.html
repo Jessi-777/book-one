@@ -201,7 +201,7 @@
   .cover-subtitle {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 300;
     color: var(--warm);
     margin-bottom: 56px;
@@ -231,7 +231,7 @@
   .tagline {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: 15px;
+    font-size: 19px;
     color: var(--warm);
     margin-bottom: 56px;
     letter-spacing: 1px;
@@ -294,7 +294,7 @@
 
   .chapter-number {
     font-weight: 300;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 6px;
     text-transform: uppercase;
     color: #5b9fd4;
@@ -313,7 +313,7 @@
   }
 
   .chapter-body p {
-    font-size: 20px;
+    font-size: 23px;
     line-height: 2.0;
     color: #ddeeff;
     margin-bottom: 28px;
@@ -326,7 +326,7 @@
     font-family: 'Playfair Display', serif;
     font-style: italic;
     color: var(--gold);
-    font-size: 17px;
+    font-size: 21px;
   }
 
   .chapter-body strong {
@@ -347,7 +347,7 @@
 
   .nav-btn {
     font-weight: 200;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 5px;
     text-transform: uppercase;
     color: #5b7fa6;
@@ -412,7 +412,7 @@
   .final-tagline {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: 17px;
+    font-size: 21px;
     color: var(--warm);
     margin-bottom: 48px;
   }
@@ -447,6 +447,127 @@
     color: var(--gold);
   }
 
+  /* FRONT & BACK MATTER */
+  .matter-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: calc(var(--nav-h) + 60px) 40px 80px;
+    background: radial-gradient(ellipse at 50% 50%, #0a1e35 0%, var(--ink) 70%);
+  }
+
+  .matter-inner {
+    max-width: 560px;
+    width: 100%;
+  }
+
+  .matter-label {
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 7px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 40px;
+    display: block;
+  }
+
+  .matter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 6vw, 48px);
+    font-weight: 300;
+    letter-spacing: 3px;
+    color: var(--paper);
+    margin-bottom: 40px;
+  }
+
+  .copyright-block p {
+    font-size: 16px;
+    line-height: 2;
+    color: var(--warm);
+    letter-spacing: 1px;
+    font-weight: 300;
+    margin-bottom: 18px;
+  }
+
+  .copyright-block .copyright-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    letter-spacing: 4px;
+    color: var(--paper);
+  }
+
+  .dedication-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(24px, 4.5vw, 32px);
+    line-height: 1.8;
+    color: var(--paper);
+  }
+
+  .epigraph-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(26px, 5vw, 36px);
+    line-height: 1.6;
+    color: var(--paper);
+    margin-bottom: 28px;
+  }
+
+  .epigraph-cite {
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .toc-list {
+    list-style: none;
+    text-align: left;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    width: 100%;
+    padding: 14px 0;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #0f2340;
+    color: var(--text);
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 23px;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .toc-item:hover { color: var(--gold); }
+
+  .toc-num {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold-dim);
+    min-width: 28px;
+  }
+
+  .matter-nav {
+    display: flex;
+    justify-content: space-between;
+    max-width: 560px;
+    width: 100%;
+    margin: 64px auto 0;
+  }
+
   /* SCROLLBAR */
   ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: var(--ink); }
@@ -460,7 +581,7 @@
         letter-spacing: 4px;
     }
     .chapter-page { padding-top: calc(var(--nav-h) + 50px); padding-left: 24px; padding-right: 24px; padding-bottom: 60px; }
-    #cover, #final { padding: 90px 24px 60px; }
+    #cover, #final, .matter-page { padding: 90px 24px 60px; }
 
   }
 
@@ -506,7 +627,7 @@
 </nav>
 
 <!-- COVER -->
-<div class="page active" id="page-0">
+<div class="page active" id="cover-page" data-label="Book One">
   <div id="cover">
     <span class="anchor-glyph">⚓</span>
     <div class="book-eyebrow">Book One</div>
@@ -515,12 +636,119 @@
     <div class="author-line">by <span>Tica Rey</span></div>
     <div class="cover-divider"></div>
     <p class="tagline">Feed your soul. Be the best you.</p>
-    <button class="begin-btn" onclick="goToPage(1)">Begin Reading</button>
+    <button class="begin-btn" onclick="nextPage()">Begin Reading</button>
   </div>
 </div>
 
+<!-- COPYRIGHT -->
+<div class="page" id="copyright-page" data-label="Copyright">
+<div class="page-scroll-inner">
+  <div class="matter-page">
+    <div class="matter-inner copyright-block">
+      <p class="copyright-title">THE ANCHOR</p>
+      <p>Nine truths for the authentic builder<br>Book One</p>
+      <p>Copyright &copy; 2026 Jessica Chavez aka Tica Rey<br>All rights reserved.</p>
+      <p>No part of this work may be reproduced, distributed, or transmitted in any form or by any means without explicit written permission from the author.</p>
+      <p>First Edition</p>
+      <p>ticarey.com</p>
+      <div class="matter-nav">
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- DEDICATION -->
+<div class="page" id="dedication-page" data-label="Dedication">
+<div class="page-scroll-inner">
+  <div class="matter-page">
+    <div class="matter-inner">
+      <span class="matter-label">Dedication</span>
+      <p class="dedication-text">For the ones who can't stop<br>even if they tried.</p>
+      <div class="matter-nav">
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- EPIGRAPH -->
+<div class="page" id="epigraph-page" data-label="Epigraph">
+<div class="page-scroll-inner">
+  <div class="matter-page">
+    <div class="matter-inner">
+      <span class="anchor-glyph" style="font-size:40px;margin-bottom:40px;">⚓</span>
+      <p class="epigraph-text">"An anchor doesn't stop movement.<br>It stops drifting."</p>
+      <div class="epigraph-cite">Tica Rey</div>
+      <div class="matter-nav">
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CONTENTS -->
+<div class="page" id="contents-page" data-label="Contents">
+<div class="page-scroll-inner">
+  <div class="matter-page">
+    <div class="matter-inner">
+      <span class="matter-label">Contents</span>
+      <ul class="toc-list">
+        <li><button class="toc-item" onclick="goToId('intro-page')"><span class="toc-num"></span>Before You Begin</button></li>
+        <li><button class="toc-item" onclick="goToEntry(1)"><span class="toc-num">I</span><span class="toc-title" data-entry="1">Clear Intentions</span></button></li>
+        <li><button class="toc-item" onclick="goToEntry(2)"><span class="toc-num">II</span><span class="toc-title" data-entry="2">What This Is</span></button></li>
+        <li><button class="toc-item" onclick="goToEntry(3)"><span class="toc-num">III</span><span class="toc-title" data-entry="3">Foundation</span></button></li>
+        <li><button class="toc-item" onclick="goToEntry(4)"><span class="toc-num">IV</span><span class="toc-title" data-entry="4">Your Talents</span></button></li>
+        <li><button class="toc-item" onclick="goToEntry(5)"><span class="toc-num">V</span><span class="toc-title" data-entry="5">Ideas</span></button></li>
+        <li><button class="toc-item" onclick="goToEntry(6)"><span class="toc-num">VI</span><span class="toc-title" data-entry="6">Time</span></button></li>
+        <li><button class="toc-item" onclick="goToEntry(7)"><span class="toc-num">VII</span><span class="toc-title" data-entry="7">The Anchor</span></button></li>
+        <li><button class="toc-item" onclick="goToEntry(8)"><span class="toc-num">VIII</span><span class="toc-title" data-entry="8">Patience Is a Superpower</span></button></li>
+        <li><button class="toc-item" onclick="goToEntry(9)"><span class="toc-num">IX</span><span class="toc-title" data-entry="9">Beyond What Seems Possible</span></button></li>
+        <li><button class="toc-item" onclick="goToId('about-page')"><span class="toc-num"></span>About the Author</button></li>
+      </ul>
+      <div class="matter-nav">
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- INTRODUCTION -->
+<div class="page" id="intro-page" data-label="Introduction">
+<div class="page-scroll-inner">
+  <div class="chapter-page">
+    <div class="chapter-inner">
+      <span class="chapter-number">Introduction</span>
+      <h2 class="chapter-title">Before You Begin</h2>
+      <div class="chapter-body">
+        <p>This is a short book. Nine entries. You can read it in one sitting.</p>
+        <p>But it was not written to be finished. It was written to be returned to.</p>
+        <p>It is for the builder carrying more than one vision. The one doing the real work when nobody is watching. The one who has been told they are doing too much, and keeps going anyway.</p>
+        <p>Read it in order the first time. Each entry builds on the one before it: intention, foundation, talent, ideas, time, and what holds it all steady.</p>
+        <p>After that, come back to whichever entry you need. On the days you feel scattered. On the days you doubt. On the days you need to remember who you are.</p>
+        <p>Take what serves you. Leave what doesn't. Be honest with yourself as you read.</p>
+        <p class="closing-line">This is not a map. It is a mirror.</p>
+      </div>
+      <div class="chapter-nav">
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
+        <div class="nav-dots"></div>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
 <!-- ENTRY 1 -->
-<div class="page" id="page-1">
+<div class="page" id="entry-1" data-entry="1" data-label="Entry One">
 <div class="page-scroll-inner">
   <div class="chapter-page">
     <div class="chapter-inner">
@@ -540,9 +768,9 @@
         <p class="closing-line">A destination can change. Direction should not.</p>
       </div>
       <div class="chapter-nav">
-        <button class="nav-btn" disabled>Previous</button>
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
         <div class="nav-dots" id="dots-1"></div>
-        <button class="nav-btn" onclick="goToPage(2)">Next</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
       </div>
     </div>
   </div>
@@ -550,7 +778,7 @@
 </div>
 
 <!-- ENTRY 2 -->
-<div class="page" id="page-2">
+<div class="page" id="entry-2" data-entry="2" data-label="Entry Two">
 <div class="page-scroll-inner">
   <div class="chapter-page">
     <div class="chapter-inner">
@@ -567,9 +795,9 @@
         <p class="closing-line">This book is not a map. It is a mirror.</p>
       </div>
       <div class="chapter-nav">
-        <button class="nav-btn" onclick="goToPage(1)">Previous</button>
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
         <div class="nav-dots" id="dots-2"></div>
-        <button class="nav-btn" onclick="goToPage(3)">Next</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
       </div>
     </div>
   </div>
@@ -577,7 +805,7 @@
 </div>
 
 <!-- ENTRY 3 -->
-<div class="page" id="page-3">
+<div class="page" id="entry-3" data-entry="3" data-label="Entry Three">
 <div class="page-scroll-inner">
   <div class="chapter-page">
     <div class="chapter-inner">
@@ -597,9 +825,9 @@
         <p class="closing-line">You cannot build a meaningful life on borrowed values.</p>
       </div>
       <div class="chapter-nav">
-        <button class="nav-btn" onclick="goToPage(2)">Previous</button>
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
         <div class="nav-dots" id="dots-3"></div>
-        <button class="nav-btn" onclick="goToPage(4)">Next</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
       </div>
     </div>
   </div>
@@ -607,7 +835,7 @@
 </div>
 
 <!-- ENTRY 4 -->
-<div class="page" id="page-4">
+<div class="page" id="entry-4" data-entry="4" data-label="Entry Four">
 <div class="page-scroll-inner">
   <div class="chapter-page">
     <div class="chapter-inner">
@@ -626,9 +854,9 @@
         <p class="closing-line">Honesty about your starting point is the beginning of mastery.</p>
       </div>
       <div class="chapter-nav">
-        <button class="nav-btn" onclick="goToPage(3)">Previous</button>
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
         <div class="nav-dots" id="dots-4"></div>
-        <button class="nav-btn" onclick="goToPage(5)">Next</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
       </div>
     </div>
   </div>
@@ -636,7 +864,7 @@
 </div>
 
 <!-- ENTRY 5 -->
-<div class="page" id="page-5">
+<div class="page" id="entry-5" data-entry="5" data-label="Entry Five">
 <div class="page-scroll-inner">
   <div class="chapter-page">
     <div class="chapter-inner">
@@ -654,9 +882,9 @@
         <p class="closing-line">Not every idea deserves your life.</p>
       </div>
       <div class="chapter-nav">
-        <button class="nav-btn" onclick="goToPage(4)">Previous</button>
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
         <div class="nav-dots" id="dots-5"></div>
-        <button class="nav-btn" onclick="goToPage(6)">Next</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
       </div>
     </div>
   </div>
@@ -664,7 +892,7 @@
 </div>
 
 <!-- ENTRY 6 -->
-<div class="page" id="page-6">
+<div class="page" id="entry-6" data-entry="6" data-label="Entry Six">
 <div class="page-scroll-inner">
   <div class="chapter-page">
     <div class="chapter-inner">
@@ -683,9 +911,9 @@
         <p class="closing-line">Every yes is a no to something else.</p>
       </div>
       <div class="chapter-nav">
-        <button class="nav-btn" onclick="goToPage(5)">Previous</button>
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
         <div class="nav-dots" id="dots-6"></div>
-        <button class="nav-btn" onclick="goToPage(7)">Next</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
       </div>
     </div>
   </div>
@@ -693,7 +921,7 @@
 </div>
 
 <!-- ENTRY 7 -->
-<div class="page" id="page-7">
+<div class="page" id="entry-7" data-entry="7" data-label="Entry Seven">
 <div class="page-scroll-inner">
   <div class="chapter-page">
     <div class="chapter-inner">
@@ -713,9 +941,9 @@
         <p class="closing-line">An anchor doesn't stop movement. It stops drifting.</p>
       </div>
       <div class="chapter-nav">
-        <button class="nav-btn" onclick="goToPage(6)">Previous</button>
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
         <div class="nav-dots" id="dots-7"></div>
-        <button class="nav-btn" onclick="goToPage(8)">Next</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
       </div>
     </div>
   </div>
@@ -723,7 +951,7 @@
 </div>
 
 <!-- ENTRY 8 -->
-<div class="page" id="page-8">
+<div class="page" id="entry-8" data-entry="8" data-label="Entry Eight">
 <div class="page-scroll-inner">
   <div class="chapter-page">
     <div class="chapter-inner">
@@ -743,9 +971,9 @@
         <p class="closing-line">Patience is movement without panic.</p>
       </div>
       <div class="chapter-nav">
-        <button class="nav-btn" onclick="goToPage(7)">Previous</button>
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
         <div class="nav-dots" id="dots-8"></div>
-        <button class="nav-btn" onclick="goToPage(9)">Next</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
       </div>
     </div>
   </div>
@@ -753,7 +981,7 @@
 </div>
 
 <!-- ENTRY 9 -->
-<div class="page" id="page-9">
+<div class="page" id="entry-9" data-entry="9" data-label="Entry Nine">
 <div class="page-scroll-inner">
   <div class="chapter-page">
     <div class="chapter-inner">
@@ -772,9 +1000,31 @@
         <p class="closing-line">Your limits are often inherited before they are tested.</p>
       </div>
       <div class="chapter-nav">
-        <button class="nav-btn" onclick="goToPage(8)">Previous</button>
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
         <div class="nav-dots" id="dots-9"></div>
-        <button class="nav-btn" onclick="goToPage(10)">Finish</button>
+        <button class="nav-btn" onclick="nextPage()">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ABOUT THE AUTHOR -->
+<div class="page" id="about-page" data-label="About the Author">
+<div class="page-scroll-inner">
+  <div class="chapter-page">
+    <div class="chapter-inner">
+      <span class="chapter-number">About the Author</span>
+      <h2 class="chapter-title">Tica Rey</h2>
+      <div class="chapter-body">
+        <p>Jessica Chavez, known as Tica Rey, is a full stack engineer, founder, multidisciplinary artist, music producer, and author.</p>
+        <p>She builds across many worlds at once, and wrote The Anchor for everyone else doing the same.</p>
+        <p class="closing-line">ticarey.com</p>
+      </div>
+      <div class="chapter-nav">
+        <button class="nav-btn" onclick="prevPage()">Previous</button>
+        <div class="nav-dots"></div>
+        <button class="nav-btn" onclick="nextPage()">Finish</button>
       </div>
     </div>
   </div>
@@ -782,7 +1032,7 @@
 </div>
 
 <!-- FINAL PAGE -->
-<div class="page" id="page-10">
+<div class="page" id="final-page" data-label="The End">
 <div class="page-scroll-inner">
   <div id="final">
     <span class="final-anchor">⚓</span>
@@ -873,7 +1123,9 @@ function setLang(lang, btn) {
 
   // Chapters
   ch.forEach(function(c, i) {
-    var pg = document.getElementById('page-' + (i+1));
+    var toc = document.querySelector('.toc-title[data-entry="' + (i+1) + '"]');
+    if (toc) toc.textContent = c.title;
+    var pg = entryPage(i+1);
     if (!pg) return;
     var ne = pg.querySelector('.chapter-number'); if(ne) ne.textContent = c.num;
     var te = pg.querySelector('.chapter-title'); if(te) te.textContent = c.title;
@@ -891,9 +1143,15 @@ function setLang(lang, btn) {
 }
 
 // PAGE NAVIGATION
-var TOTAL_PAGES = 11;
-var LABELS = ['Book One','Entry One','Entry Two','Entry Three','Entry Four','Entry Five','Entry Six','Entry Seven','Entry Eight','Entry Nine','The End'];
+var pages = document.querySelectorAll('.page');
 var current = 0;
+
+function pageIndexOf(el) { return Array.prototype.indexOf.call(pages, el); }
+function entryPage(n) { return document.querySelector('.page[data-entry="' + n + '"]'); }
+function goToEntry(n) { goToPage(pageIndexOf(entryPage(n))); }
+function goToId(id) { goToPage(pageIndexOf(document.getElementById(id))); }
+function nextPage() { if (current < pages.length - 1) goToPage(current + 1); }
+function prevPage() { if (current > 0) goToPage(current - 1); }
 
 function buildDots(id, cur) {
   var c = document.getElementById(id);
@@ -902,13 +1160,13 @@ function buildDots(id, cur) {
   for (var i = 1; i <= 9; i++) {
     var d = document.createElement('div');
     d.className = 'dot' + (i === cur ? ' active' : '');
-    (function(n){ d.onclick = function(){ goToPage(n); }; })(i);
+    (function(n){ d.onclick = function(){ goToEntry(n); }; })(i);
     c.appendChild(d);
   }
 }
 
 function goToPage(index) {
-  var pages = document.querySelectorAll('.page');
+  if (index < 0) return;
   pages[current].classList.remove('active');
   pages[index].classList.add('active');
   // Scroll the inner scroll container to top
@@ -919,13 +1177,14 @@ function goToPage(index) {
     pages[index].scrollTop = 0;
   }
   current = index;
-  document.getElementById('nav-label').textContent = LABELS[index];
-  if (index >= 1 && index <= 9) buildDots('dots-' + index, index);
+  document.getElementById('nav-label').textContent = pages[index].dataset.label || '';
+  var entry = parseInt(pages[index].dataset.entry, 10);
+  if (entry) buildDots('dots-' + entry, entry);
 }
 
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { if (current < TOTAL_PAGES-1) goToPage(current+1); }
-  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if (current > 0) goToPage(current-1); }
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextPage();
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevPage();
 });
 
 for (var i = 1; i <= 9; i++) buildDots('dots-'+i, i);
