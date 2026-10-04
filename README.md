@@ -54,7 +54,7 @@ This is not a map. It is a mirror.
 
 ## How to Run Locally
 
-1. Download `the-anchor-website.html`
+1. Download `index.html`
 2. Open it in any browser
 3. That's it
 
@@ -120,7 +120,7 @@ The Anchor has built-in support for 12 languages accessible via the Translate bu
 ## Design
 
 - Color palette: deep ocean navy and gold
-- Typography: Playfair Display (headings) + Jost (body)
+- Typography: Cormorant Garamond (headings) + Lora (body)
 - Inspired by the anchor metaphor — grounded, purposeful, steady
 
 ---
